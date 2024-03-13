@@ -1,0 +1,18 @@
+{
+  "name": "thimblerigger",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@taqueria/plugin-core": "^0.49.0",
+    "@taqueria/plugin-flextesa": "^0.49.0",
+    "@taqueria/plugin-smartpy": "^0.37.0",
+    "@taqueria/plugin-taquito": "^0.49.0"
+  }
+}
