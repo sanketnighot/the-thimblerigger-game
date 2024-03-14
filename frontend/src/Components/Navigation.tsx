@@ -1,11 +1,45 @@
-import React, { useState } from "react"
-import { useRouter } from 'next/router';
+import React, { useState, useEffect } from "react"
+import { useRouter } from "next/router"
+import { dappClient } from "../utils/walletconnect"
+import { toast } from "react-toastify"
 
 const Navigation = () => {
-  const [isDropdownVisible, setIsDropdownVisible] = useState(false)
-  const router = useRouter();
-  const isActive = (href: string) => router.pathname === href;
+  const [account, setAccount] = useState<string | null>(null)
+  const [isDropdownVisible, setIsDropdownVisible] = useState<boolean>(false)
+  const router = useRouter()
+  const isActive = (href: string) => router.pathname === href
 
+  useEffect(() => {
+    ;(async () => {
+      // TODO 5.b - Get the active account
+      const accounts = await dappClient().getAccount()
+      if (accounts.success === true) {
+        setAccount(accounts.account?.address)
+      } else {
+        setAccount(null)
+      }
+    })()
+  }, [account])
+
+  const connectWallet = async () => {
+    await dappClient().CheckIfWalletConnected()
+    const accounts = await dappClient().getAccount()
+    if (accounts.success === true) {
+      setAccount(accounts.account?.address)
+    } else {
+      setAccount(null)
+    }
+  }
+
+  const disconnectWallet = async () => {
+    await dappClient().disconnectWallet()
+    const accounts = await dappClient().getAccount()
+    if (accounts.success === true) {
+      setAccount(accounts.account?.address)
+    } else {
+      setAccount(null)
+    }
+  }
 
   return (
     <>
@@ -23,24 +57,45 @@ const Navigation = () => {
             <button
               type="button"
               className="text-white bg-gradient-to-br from-[#e3c129] to-[#758256] hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center hidden md:flex"
+              onClick={account ? disconnectWallet : connectWallet}
             >
-              <span className="flex justify-center items-center">
-                Connect Wallet &nbsp;
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="w-6 h-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15M12 9l3 3m0 0-3 3m3-3H2.25"
-                  />
-                </svg>
-              </span>
+              {!account ? (
+                <span className="flex justify-center items-center">
+                  Connect Wallet &nbsp;
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    className="w-6 h-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15M12 9l3 3m0 0-3 3m3-3H2.25"
+                    />
+                  </svg>
+                </span>
+              ) : (
+                <span className="flex justify-center items-center">
+                  Disconnect {account.slice(0, 10)}... &nbsp;
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    className="w-6 h-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9"
+                    />
+                  </svg>
+                </span>
+              )}
             </button>
             <button
               data-collapse-toggle="navbar-sticky"
@@ -73,24 +128,45 @@ const Navigation = () => {
                   <button
                     type="button"
                     className="text-white bg-gradient-to-br from-[#e3c129] to-[#758256] hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center w-full"
+                    onClick={account ? disconnectWallet : connectWallet}
                   >
-                    <span className="flex justify-center items-center">
-                      Connect Wallet &nbsp;
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth="1.5"
-                        stroke="currentColor"
-                        className="w-6 h-6"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15M12 9l3 3m0 0-3 3m3-3H2.25"
-                        />
-                      </svg>
-                    </span>
+                    {!account ? (
+                      <span className="flex justify-center items-center">
+                        Connect Wallet &nbsp;
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth="1.5"
+                          stroke="currentColor"
+                          className="w-6 h-6"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15M12 9l3 3m0 0-3 3m3-3H2.25"
+                          />
+                        </svg>
+                      </span>
+                    ) : (
+                      <span className="flex justify-center items-center">
+                        Disconnect {account.slice(0, 10)}... &nbsp;
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth="1.5"
+                          stroke="currentColor"
+                          className="w-6 h-6"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9"
+                          />
+                        </svg>
+                      </span>
+                    )}
                   </button>
                 </div>
                 <div className="px-1 py-2">
@@ -120,7 +196,7 @@ const Navigation = () => {
               <li>
                 <a
                   href="/"
-                  className={`block py-2 px-3 text-gray-100 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-300 md:p-0 ${isActive('/') ? 'text-red-500' : ''}`}
+                  className={`block py-2 px-3 text-gray-100 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-300 md:p-0 ${isActive("/") ? "text-red-500" : ""}`}
                   aria-current="page"
                 >
                   Play Game
@@ -129,7 +205,7 @@ const Navigation = () => {
               <li>
                 <a
                   href="/mygames"
-                  className={`block py-2 px-3 text-gray-100 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-300 md:p-0 ${isActive('/mygames') ? 'text-red-500' : ''}`}
+                  className={`block py-2 px-3 text-gray-100 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-300 md:p-0 ${isActive("/mygames") ? "text-red-500" : ""}`}
                 >
                   My Games
                 </a>

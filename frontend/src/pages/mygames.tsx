@@ -1,59 +1,89 @@
 // redeem.tsx
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import Navigation from "@/Components/Navigation"
 import GameCard from "@/Components/GameCard" // Adjust the import path as necessary
 import styles from "../styles/Home.module.css"
+import { GAME_CONTRACT_ADDRESS, GAME_FEES } from "@/utils/config"
+import { dappClient } from "../utils/walletconnect"
+import axios from "axios"
+import { toast } from "react-toastify"
 
-const games = [
-  {
-    image: "/thimblerigger.gif",
-    name: "Game 1",
-    description: "Description for Game 1",
-  },
-  {
-    image: "/thimblerigger.gif",
-    name: "Game 2",
-    description: "Description for Game 2",
-  },
-  {
-    image: "/thimblerigger.gif",
-    name: "Game 1",
-    description: "Description for Game 1",
-  },
-  {
-    image: "/thimblerigger.gif",
-    name: "Game 2",
-    description: "Description for Game 2",
-  },
-  {
-    image: "/thimblerigger.gif",
-    name: "Game 2",
-    description: "Description for Game 2",
-  },
-  {
-    image: "/thimblerigger.gif",
-    name: "Game 1",
-    description: "Description for Game 1",
-  },
-  {
-    image: "/thimblerigger.gif",
-    name: "Game 2",
-    description: "Description for Game 2",
-  },
-  {
-    image: "/thimblerigger.gif",
-    name: "Game 2",
-    description: "Description for Game 2",
-  },
-  {
-    image: "/thimblerigger.gif",
-    name: "Game 1",
-    description: "Description for Game 1",
-  },
-  // Add more games as needed
-]
 const MyGames = () => {
   const [selectedGames, setSelectedGames] = useState<number[]>([])
+  const [account, setAccount] = useState<string | null>(null)
+  const [gameData, setGameData] = useState<any>([])
+
+  useEffect(() => {
+    ;(async () => {
+      // TODO 5.b - Get the active account
+      const accounts = await dappClient().getAccount()
+      console.log(accounts)
+      if (accounts.success === true) {
+        setAccount(accounts.account?.address)
+        const gameData = await axios.get(
+          `https://api.ghostnet.tzkt.io/v1/bigmaps/408619/keys?value.player=${accounts.account?.address}`
+        )
+        setGameData(gameData.data)
+        console.log(gameData.data)
+      } else {
+        setAccount(null)
+      }
+    })()
+  }, [])
+
+  const redeemRewards = async () => {
+    try {
+      toast.promise(dappClient().CheckIfWalletConnected(), {
+        pending: "Checking Wallet connection ...",
+        success: "Wallet connected",
+        error: "Error in Wallet Connection",
+      })
+      const accounts = await dappClient().getAccount()
+      if (accounts.success === true) {
+        setAccount(accounts.account?.address)
+      } else {
+        setAccount(null)
+      }
+      let addOprData: any[] = []
+      selectedGames.map((id: any) => {
+        addOprData.push({
+          add_operator: {
+            owner: account,
+            operator: GAME_CONTRACT_ADDRESS,
+            token_id: id,
+          },
+        })
+      })
+
+      let removeOprData: any[] = []
+      selectedGames.map((id: any) => {
+        removeOprData.push({
+          remove_operator: {
+            owner: account,
+            operator: GAME_CONTRACT_ADDRESS,
+            token_id: id,
+          },
+        })
+      })
+      const tezos = await dappClient().tezos()
+      const game_contract = await tezos.wallet.at(GAME_CONTRACT_ADDRESS)
+      const batch = await tezos.wallet
+        .batch()
+        .withContractCall(game_contract.methodsObject.update_operators(addOprData))
+        .withContractCall(game_contract.methodsObject.redeem(selectedGames))
+        .withContractCall(game_contract.methodsObject.update_operators(removeOprData))
+        .send()
+      toast.promise(batch.confirmation(), {
+        pending: "Waiting for confirmation ...",
+        success: "Transaction Successful!",
+        error: "Error in operation",
+      })
+      console.log(batch.opHash)
+    } catch (error: any) {
+      console.log(error)
+      toast.error("Error: " + error.message)
+    }
+  }
 
   const handleGameSelect = (game: number) => {
     setSelectedGames((prevSelectedGames) => {
@@ -73,14 +103,14 @@ const MyGames = () => {
         {/* Increase the top margin here */}
         <h1 className="text-5xl font-bold mb-4 text-gray-300">Your Games</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-10 overflow-y-auto max-h-[70vh] p-4 border-2 rounded-xl mx-4">
-          {games.map((game, index) => (
+          {gameData.map((game: any) => (
             <GameCard
-              key={index}
-              image={game.image}
-              name={game.name}
-              description={game.description}
-              selected={selectedGames.includes(index)}
-              onClick={() => handleGameSelect(index)}
+              key={Number(game.key)}
+              image={"/thimblerigger.gif"}
+              name={`Game ${game.key}`}
+              description={`Result: ${game.value.result === "0" ? "Won" : "Lost"}`}
+              selected={selectedGames.includes(Number(game.key))}
+              onClick={() => handleGameSelect(Number(game.key))}
             />
           ))}
         </div>
@@ -88,6 +118,7 @@ const MyGames = () => {
           <button
             type="button"
             className="text-white bg-gradient-to-br from-[#9b831d] to-[#85975b] hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xl px-8 py-2 text-center w-auto"
+            onClick={redeemRewards}
           >
             <span className="flex items-center justify-center">
               Redeem &nbsp;
