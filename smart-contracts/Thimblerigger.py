@@ -23,6 +23,10 @@ def thimblerigger():
     )
 
     class Thimblerigger(main.Fa2NftMinimal):
+        """
+        Thimblerigger contract.
+        """
+
         def __init__(
             self,
             metadata,
@@ -32,6 +36,16 @@ def thimblerigger():
             game_price,
             game_reward,
         ):
+            """
+            Initialize the Thimblerigger contract.
+
+            :param metadata: The metadata for the contract.
+            :param administrator: The address of the contract administrator.
+            :param hux_contract_address: The address of the HUX token contract.
+            :param hux_amount: The amount of HUX tokens to transfer in each game.
+            :param game_price: The price of playing the game in tez.
+            :param game_reward: The reward amount in tez for winning the game.
+            """
             main.Fa2NftMinimal.__init__(
                 self,
                 administrator,
@@ -63,6 +77,11 @@ def thimblerigger():
 
         @sp.private(with_operations=True)
         def transferToken(self, params):
+            """
+            Transfer tokens from the contract to a receiver.
+
+            :param params: The transfer parameters.
+            """
             sp.cast(
                 params,
                 sp.record(
@@ -99,25 +118,37 @@ def thimblerigger():
 
         @sp.private(with_storage="read-write")
         def is_admin(self):
+            """
+            Check if the sender is the contract administrator.
+            """
             assert sp.sender == self.data.administrator, "NotAdmin"
 
         @sp.private(with_storage="read-write")
         def is_paused(self):
+            """
+            Check if the contract is paused.
+            """
             assert self.data.pause == False, "ContractPaused"
 
         @sp.entrypoint
         def default(self):
+            """
+            Default entrypoint.
+            """
             self.is_paused()
             pass
 
         @sp.entrypoint
         def play(self):
+            """
+            Play the Thimblerigger game.
+            """
             # Check if the sender has enough balance to play the game
             self.is_paused()
             assert sp.amount == self.data.game_price, "InsufficientAmount"
             assert self.data.next_token_id < self.data.max_mint, "MaxMintReached"
 
-            # Genereate Sudo Random Number
+            # Generate Sudo Random Number
             token_id = self.data.next_token_id
             current_time_in_nat = utils.seconds_of_timestamp(  # type: ignore
                 sp.add_days(sp.now, sp.to_int(self.data.next_token_id + sp.nat(17623)))
@@ -221,6 +252,11 @@ def thimblerigger():
 
         @sp.entrypoint
         def redeem(self, token_ids):
+            """
+            Redeem the NFT tokens.
+
+            :param token_ids: The list of token IDs to redeem.
+            """
             sp.cast(token_ids, sp.list[sp.nat])
             self.is_paused()
             for token_id in token_ids:
@@ -241,12 +277,22 @@ def thimblerigger():
 
         @sp.entrypoint
         def withdraw_tez(self, amount):
+            """
+            Withdraw tez from the contract.
+
+            :param amount: The amount of tez to withdraw.
+            """
             self.is_admin()
             assert sp.balance >= amount, "InsufficientBalance"
             sp.send(self.data.administrator, amount)
 
         @sp.entrypoint
         def withdraw_hux(self, amount):
+            """
+            Withdraw HUX tokens from the contract.
+
+            :param amount: The amount of HUX tokens to withdraw.
+            """
             self.is_admin()
             self.transferToken(
                 sp.record(

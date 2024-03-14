@@ -1,0 +1,41 @@
+.container {
+  min-height: 100vh;
+  padding: 0 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%; /* Full width for mobile */
+}
+
+.main {
+  padding: 5rem 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%; /* Full width for mobile */
+}
+
+.title {
+  margin: 0;
+  line-height: 1.15;
+  font-size: 4rem;
+  text-align: center;
+}
+
+.description {
+  line-height: 1.5;
+  font-size: 1.5rem;
+}
+
+/* For desktops and tablets */
+@media (min-width: 768px) {
+  .container,
+  .main {
+    width: 80%; /* 80% width for desktops and tablets */
+    margin-left: auto;
+    margin-right: auto; /* Center the container */
+  }
+}
