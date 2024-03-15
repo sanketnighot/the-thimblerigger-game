@@ -18,6 +18,7 @@ def thimblerigger():
 
     game_ledger_value_type: type = sp.record(
         player=sp.address,
+        result_id=sp.nat,
         result=sp.nat,
         redeemed=sp.bool,
     )
@@ -57,10 +58,12 @@ def thimblerigger():
             )
             self.data.max_mint = sp.cast(10, sp.nat)
             self.data.success_nft_base_url = sp.cast(
-                "https://success_example.com/", sp.string
+                "ipfs://QmciLugiC4KbbH532q5cLPWbM5wCGSefY5E5DDkYs6hgsw/success/",
+                sp.string,
             )
             self.data.failure_nft_base_url = sp.cast(
-                "https://failure_example.com/", sp.string
+                "ipfs://QmciLugiC4KbbH532q5cLPWbM5wCGSefY5E5DDkYs6hgsw/failure/",
+                sp.string,
             )
             self.data.last_success_id = sp.cast(0, sp.nat)
             self.data.last_failure_id = sp.cast(0, sp.nat)
@@ -162,8 +165,6 @@ def thimblerigger():
             sp.trace(sudo_random_number)
 
             (total_success, total_failure) = self.data.distribution
-            sp.trace((self.data.last_success_id, self.data.last_failure_id))
-            sp.trace(self.data.distribution)
 
             # Create Metadata According to Result
             metadata_url = ""
@@ -180,8 +181,17 @@ def thimblerigger():
                         token_id=token_id,
                         token_info={"": sp.pack(metadata_url)},
                     )
+                    # Record the game result
+                    self.data.game_ledger[token_id] = sp.record(
+                        player=sp.sender,
+                        result_id=self.data.last_failure_id,
+                        result=sudo_random_number,
+                        redeemed=False,
+                    )
                     self.data.last_failure_id += 1
+
                 else:
+                    sudo_random_number = sp.nat(0)
                     metadata_url = sp.concat(
                         [
                             self.data.success_nft_base_url,
@@ -193,7 +203,15 @@ def thimblerigger():
                         token_id=token_id,
                         token_info={"": sp.pack(metadata_url)},
                     )
+                    # Record the game result
+                    self.data.game_ledger[token_id] = sp.record(
+                        player=sp.sender,
+                        result_id=self.data.last_success_id,
+                        result=sudo_random_number,
+                        redeemed=False,
+                    )
                     self.data.last_success_id += 1
+
             else:
                 if sudo_random_number == sp.nat(0):
                     if (self.data.last_success_id) < total_success:
@@ -208,8 +226,17 @@ def thimblerigger():
                             token_id=token_id,
                             token_info={"": sp.pack(metadata_url)},
                         )
+                        # Record the game result
+                        self.data.game_ledger[token_id] = sp.record(
+                            player=sp.sender,
+                            result_id=self.data.last_success_id,
+                            result=sudo_random_number,
+                            redeemed=False,
+                        )
                         self.data.last_success_id += 1
+
                     else:
+                        sudo_random_number = sp.nat(1)
                         metadata_url = sp.concat(
                             [
                                 self.data.failure_nft_base_url,
@@ -221,23 +248,21 @@ def thimblerigger():
                             token_id=token_id,
                             token_info={"": sp.pack(metadata_url)},
                         )
+                        # Record the game result
+                        self.data.game_ledger[token_id] = sp.record(
+                            player=sp.sender,
+                            result_id=self.data.last_failure_id,
+                            result=sudo_random_number,
+                            redeemed=False,
+                        )
                         self.data.last_failure_id += 1
 
             # Mint the NFT
-            sp.trace(metadata_url)
             self.data.token_metadata[token_id] = sp.record(
                 token_id=token_id,
                 token_info={"": sp.pack(metadata_url)},
             )
             self.data.ledger[token_id] = sp.sender
-            self.data.next_token_id += 1
-
-            # Record the game result
-            self.data.game_ledger[token_id] = sp.record(
-                player=sp.sender,
-                result=sudo_random_number,
-                redeemed=False,
-            )
 
             # Transfer HUX to the sender
             self.transferToken(
@@ -249,6 +274,14 @@ def thimblerigger():
                     token_contract=self.data.hux_contract_address,
                 )
             )
+            sp.trace(metadata_url)
+            sp.emit(
+                sp.record(
+                    game_id=token_id, player=sp.sender, result=sudo_random_number
+                ),
+                tag="GamePlayed",
+            )
+            self.data.next_token_id += 1
 
         @sp.entrypoint
         def redeem(self, token_ids):
@@ -262,6 +295,7 @@ def thimblerigger():
             for token_id in token_ids:
                 game_info = self.data.game_ledger[token_id]
                 assert game_info.player == sp.sender, "InvalidSender"
+                assert game_info.result == sp.nat(0), "InvalidResult"
                 assert game_info.redeemed == False, "AlreadyRedeemed"
                 self.transferToken(
                     sp.record(
@@ -274,6 +308,10 @@ def thimblerigger():
                 )
                 sp.send(sp.sender, self.data.game_reward)
                 self.data.game_ledger[token_id].redeemed = True
+            sp.emit(
+                sp.record(game_id=token_ids, player=sp.sender),
+                tag="RewardRedeemed",
+            )
 
         @sp.entrypoint
         def withdraw_tez(self, amount):
@@ -285,6 +323,7 @@ def thimblerigger():
             self.is_admin()
             assert sp.balance >= amount, "InsufficientBalance"
             sp.send(self.data.administrator, amount)
+            sp.emit(sp.record(amount=amount), tag="TezWithdrawn")
 
         @sp.entrypoint
         def withdraw_hux(self, amount):
@@ -303,12 +342,14 @@ def thimblerigger():
                     token_contract=self.data.hux_contract_address,
                 )
             )
+            sp.emit(sp.record(amount=amount), tag="HuxWithdrawn")
 
         @sp.entrypoint
         def toggle_pause(self, action):
             sp.cast(action, sp.bool)
             self.is_admin()
             self.data.pause = action
+            sp.emit(sp.record(action=action), tag="PauseToggled")
 
 
 if __name__ == "__main__":
@@ -411,6 +452,7 @@ if __name__ == "__main__":
         thbr.redeem(
             [1],
             _sender=Address.alice,
+            _valid=False,
         )
 
         thbr.redeem(
@@ -428,3 +470,19 @@ if __name__ == "__main__":
         sc.h1("--------- Storage ---------")
         sc.show(thbr.data.game_ledger)
         sc.show(thbr.balance)
+
+    @sp.add_test()
+    def test():
+        sc = sp.test_scenario(
+            "ThimbleriggerCompiled",
+            [sp.math, sp.rational, sp.string_utils, sp.utils, main, thimblerigger],
+        )
+        thbr = thimblerigger.Thimblerigger(
+            metadata=sp.scenario_utils.metadata_of_url("https://example.com"),
+            administrator=sp.address("tz1NXUXCPwsQMHGCpdz8d1HowSp7WjNRvWth"),
+            hux_contract_address=sp.address("KT1MgzSQtKuzce3GQoo776K68EU7mpcPH8Fk"),
+            hux_amount=sp.nat(100),
+            game_price=sp.tez(3),
+            game_reward=sp.tez(9),
+        )
+        sc += thbr

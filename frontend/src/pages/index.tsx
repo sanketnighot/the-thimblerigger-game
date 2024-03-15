@@ -39,7 +39,7 @@ export default function Home() {
       const tezos = await dappClient().tezos()
       const game_contract = await tezos.wallet.at(GAME_CONTRACT_ADDRESS)
       const operation = await game_contract.methodsObject
-        .mint()
+        .play()
         .send({ amount: GAME_FEES, mutez: true })
       toast.promise(operation.confirmation(), {
         pending: "Waiting for confirmation ...",
@@ -108,8 +108,6 @@ export default function Home() {
             </button>
           </div>
         </main>
-        {/* <SuccessToast /> */}
-        {/* <ErrorToast /> */}
       </div>
     </>
   )

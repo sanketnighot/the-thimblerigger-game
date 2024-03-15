@@ -1,0 +1,8 @@
+Creating contract KT1TezoooozzSmartPyzzSTATiCzzzwwBFA1
+ -> (Pair "tz1NXUXCPwsQMHGCpdz8d1HowSp7WjNRvWth" (Pair "tz1burnburnburnburnburnburnburjAYjjX" (Pair (Pair 3 7) (Pair "ipfs://QmciLugiC4KbbH532q5cLPWbM5wCGSefY5E5DDkYs6hgsw/failure/" (Pair {} (Pair 3000000 (Pair 9000000 (Pair 100 (Pair "KT1MgzSQtKuzce3GQoo776K68EU7mpcPH8Fk" (Pair 0 (Pair 0 (Pair {} (Pair 10 (Pair {Elt "" 0x68747470733a2f2f6578616d706c652e636f6d} (Pair 0 (Pair {} (Pair False (Pair "ipfs://QmciLugiC4KbbH532q5cLPWbM5wCGSefY5E5DDkYs6hgsw/success/" {}))))))))))))))))))
+file ThimbleriggerCompiled/step_006_cont_0_storage.tz
+file ThimbleriggerCompiled/step_006_cont_0_storage.json
+file ThimbleriggerCompiled/step_006_cont_0_storage.py
+file ThimbleriggerCompiled/step_006_cont_0_types.py
+file ThimbleriggerCompiled/step_006_cont_0_contract.tz contract Thimblerigger
+file ThimbleriggerCompiled/step_006_cont_0_contract.json contract Thimblerigger

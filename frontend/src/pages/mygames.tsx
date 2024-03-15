@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react"
 import Navigation from "@/Components/Navigation"
 import GameCard from "@/Components/GameCard" // Adjust the import path as necessary
 import styles from "../styles/Home.module.css"
-import { GAME_CONTRACT_ADDRESS, GAME_FEES } from "@/utils/config"
+import { API, GAME_CONTRACT_ADDRESS, GAME_FEES } from "@/utils/config"
 import { dappClient } from "../utils/walletconnect"
 import axios from "axios"
 import { toast } from "react-toastify"
@@ -17,11 +17,13 @@ const MyGames = () => {
     ;(async () => {
       // TODO 5.b - Get the active account
       const accounts = await dappClient().getAccount()
-      console.log(accounts)
       if (accounts.success === true) {
         setAccount(accounts.account?.address)
+        const gameStorage = await axios.get(
+          `${API}/contracts/${GAME_CONTRACT_ADDRESS}/storage`
+        )
         const gameData = await axios.get(
-          `https://api.ghostnet.tzkt.io/v1/bigmaps/408619/keys?value.player=${accounts.account?.address}`
+          `https://api.ghostnet.tzkt.io/v1/bigmaps/${gameStorage.data.game_ledger}/keys?value.player=${accounts.account?.address}`
         )
         setGameData(gameData.data)
         console.log(gameData.data)
@@ -69,9 +71,13 @@ const MyGames = () => {
       const game_contract = await tezos.wallet.at(GAME_CONTRACT_ADDRESS)
       const batch = await tezos.wallet
         .batch()
-        .withContractCall(game_contract.methodsObject.update_operators(addOprData))
+        .withContractCall(
+          game_contract.methodsObject.update_operators(addOprData)
+        )
         .withContractCall(game_contract.methodsObject.redeem(selectedGames))
-        .withContractCall(game_contract.methodsObject.update_operators(removeOprData))
+        .withContractCall(
+          game_contract.methodsObject.update_operators(removeOprData)
+        )
         .send()
       toast.promise(batch.confirmation(), {
         pending: "Waiting for confirmation ...",
@@ -106,13 +112,23 @@ const MyGames = () => {
           {gameData.map((game: any) => (
             <GameCard
               key={Number(game.key)}
-              image={"/thimblerigger.gif"}
-              name={`Game ${game.key}`}
-              description={`Result: ${game.value.result === "0" ? "Won" : "Lost"}`}
               selected={selectedGames.includes(Number(game.key))}
+              gameData={game}
               onClick={() => handleGameSelect(Number(game.key))}
             />
           ))}
+          <div className="justify-center my-5 grid col-span-4">
+            {gameData.length === 0 && !account && (
+              <p className="text-gray-400 text-xl mx-auto italic font-extrabold">
+                Connect Wallet to see your games.
+              </p>
+            )}
+            {gameData.length === 0 && account && (
+              <p className="text-gray-400 text-xl mx-auto italic font-extrabold">
+                No Games Found for this wallet.
+              </p>
+            )}
+          </div>
         </div>
         <div className="flex justify-center my-5">
           <button

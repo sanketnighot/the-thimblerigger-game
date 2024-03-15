@@ -1,0 +1,106 @@
+{
+  "prim": "Pair",
+  "args": [
+    { "string": "tz1NXUXCPwsQMHGCpdz8d1HowSp7WjNRvWth" },
+    {
+      "prim": "Pair",
+      "args": [
+        { "string": "tz1burnburnburnburnburnburnburjAYjjX" },
+        {
+          "prim": "Pair",
+          "args": [
+            { "prim": "Pair", "args": [ { "int": "3" }, { "int": "7" } ] },
+            {
+              "prim": "Pair",
+              "args": [
+                { "string": "ipfs://QmciLugiC4KbbH532q5cLPWbM5wCGSefY5E5DDkYs6hgsw/failure/" },
+                {
+                  "prim": "Pair",
+                  "args": [
+                    [],
+                    {
+                      "prim": "Pair",
+                      "args": [
+                        { "int": "3000000" },
+                        {
+                          "prim": "Pair",
+                          "args": [
+                            { "int": "9000000" },
+                            {
+                              "prim": "Pair",
+                              "args": [
+                                { "int": "100" },
+                                {
+                                  "prim": "Pair",
+                                  "args": [
+                                    { "string": "KT1MgzSQtKuzce3GQoo776K68EU7mpcPH8Fk" },
+                                    {
+                                      "prim": "Pair",
+                                      "args": [
+                                        { "int": "0" },
+                                        {
+                                          "prim": "Pair",
+                                          "args": [
+                                            { "int": "0" },
+                                            {
+                                              "prim": "Pair",
+                                              "args": [
+                                                [],
+                                                {
+                                                  "prim": "Pair",
+                                                  "args": [
+                                                    { "int": "10" },
+                                                    {
+                                                      "prim": "Pair",
+                                                      "args": [
+                                                        [ { "prim": "Elt", "args": [ { "string": "" }, { "bytes": "68747470733a2f2f6578616d706c652e636f6d" } ] } ],
+                                                        {
+                                                          "prim": "Pair",
+                                                          "args": [
+                                                            { "int": "0" },
+                                                            {
+                                                              "prim": "Pair",
+                                                              "args": [
+                                                                [],
+                                                                {
+                                                                  "prim": "Pair",
+                                                                  "args": [
+                                                                    { "prim": "False" },
+                                                                    {
+                                                                      "prim": "Pair",
+                                                                      "args": [ { "string": "ipfs://QmciLugiC4KbbH532q5cLPWbM5wCGSefY5E5DDkYs6hgsw/success/" }, [] ]
+                                                                    }
+                                                                  ]
+                                                                }
+                                                              ]
+                                                            }
+                                                          ]
+                                                        }
+                                                      ]
+                                                    }
+                                                  ]
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
