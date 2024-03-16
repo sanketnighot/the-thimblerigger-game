@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { useRouter } from "next/router"
 import { dappClient } from "../utils/walletconnect"
-import { toast } from "react-toastify"
 
 const Navigation = () => {
   const [account, setAccount] = useState<string | null>(null)
@@ -10,7 +9,7 @@ const Navigation = () => {
   const isActive = (href: string) => router.pathname === href
 
   useEffect(() => {
-    ;(async () => {
+    (async () => {
       // TODO 5.b - Get the active account
       const accounts = await dappClient().getAccount()
       if (accounts.success === true) {

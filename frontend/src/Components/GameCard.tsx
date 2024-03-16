@@ -7,11 +7,12 @@ interface GameCardProps {
   onClick: () => void
 }
 
+// @typescript-eslint/no-explicit-any
 const GameCard: React.FC<GameCardProps> = ({ selected, onClick, gameData }) => {
   let image = "/thimblerigger.gif"
+  let redeemed = "Non Redeemable"
   const name = `Game ${gameData.key}`
   const description = `Result: ${gameData.value.result === "0" ? "Won" : "Lost"}`
-  let redeemed = "Non Redeemable"
   if (gameData.value.result === "0") {
     image = `/game_images/success/${gameData.value.result_id}.JPG`
   }
@@ -29,7 +30,7 @@ const GameCard: React.FC<GameCardProps> = ({ selected, onClick, gameData }) => {
 
   return (
     <div
-      className={`game-card rounded-md border-2  ${selected ? "border-[#ff2ea8] bg-[#fad5eb] border-4" : "border-white bg-white border-2"}`}
+      className={`rounded-md border-2  ${selected ? "border-[#ff2ea8] bg-[#fad5eb] border-4" : "border-white bg-white border-2"}`}
       onClick={onClick}
     >
       <img
