@@ -162,7 +162,6 @@ def thimblerigger():
                 (current_time_in_nat * current_level) + self.data.next_token_id,
                 sp.nat(2),
             )
-            sp.trace(sudo_random_number)
 
             (total_success, total_failure) = self.data.distribution
 
@@ -264,16 +263,26 @@ def thimblerigger():
             )
             self.data.ledger[token_id] = sp.sender
 
-            # Transfer HUX to the sender
-            self.transferToken(
-                sp.record(
-                    sender=sp.self_address(),
-                    receiver=sp.sender,
-                    amount=self.data.hux_amount,
-                    token_id=sp.nat(0),
-                    token_contract=self.data.hux_contract_address,
-                )
-            )
+            # contractParams = sp.contract(
+            #     sp.record(to_=sp.address, metadata=sp.map[sp.string, sp.bytes]),
+            #     sp.self_address(),
+            #     "mint",
+            # ).unwrap_some()
+
+            # dataToSend = sp.record(to_=sp.sender, metadata={"": sp.pack(metadata_url)})
+
+            # sp.transfer(dataToSend, sp.mutez(0), contractParams)
+
+            # # Transfer HUX to the sender
+            # self.transferToken(
+            #     sp.record(
+            #         sender=sp.self_address(),
+            #         receiver=sp.sender,
+            #         amount=self.data.hux_amount,
+            #         token_id=sp.nat(0),
+            #         token_contract=self.data.hux_contract_address,
+            #     )
+            # )
             sp.trace(metadata_url)
             sp.emit(
                 sp.record(
@@ -291,6 +300,7 @@ def thimblerigger():
             :param token_ids: The list of token IDs to redeem.
             """
             sp.cast(token_ids, sp.list[sp.nat])
+            assert len(token_ids) > 0, "InvalidTokenIds"
             self.is_paused()
             for token_id in token_ids:
                 game_info = self.data.game_ledger[token_id]
@@ -466,6 +476,11 @@ if __name__ == "__main__":
             _sender=Address.alice,
             _valid=False,
         )
+        thbr.redeem(
+            [],
+            _sender=Address.alice,
+            _valid=False,
+        )
 
         sc.h1("--------- Storage ---------")
         sc.show(thbr.data.game_ledger)
@@ -477,8 +492,21 @@ if __name__ == "__main__":
             "ThimbleriggerCompiled",
             [sp.math, sp.rational, sp.string_utils, sp.utils, main, thimblerigger],
         )
+        metadata_dict = sp.create_tzip16_metadata(
+            name="The Thimblerigger Test",
+            version="1.0.0",
+            license_name="None",
+            description="An art project to show similarities between NFT and Scam methods. The project is an NFT mint page where I offer to redeem certain NFTs for double the price.",
+            authors=["Max Haarich <https://x.com/UzupisMUC>"],
+        )
+        metadata_uri = sp.pin_on_ipfs(
+            metadata_dict,
+            "6de056e33b24623371f1",
+            "8f8db8c40cc4edc8c10eb8e6ccc11337fe714d2755afff69353563aac4bfc816",
+        )
+
         thbr = thimblerigger.Thimblerigger(
-            metadata=sp.scenario_utils.metadata_of_url("https://example.com"),
+            metadata=sp.scenario_utils.metadata_of_url(metadata_uri),
             administrator=sp.address("tz1NXUXCPwsQMHGCpdz8d1HowSp7WjNRvWth"),
             hux_contract_address=sp.address("KT1MgzSQtKuzce3GQoo776K68EU7mpcPH8Fk"),
             hux_amount=sp.nat(100),

@@ -26,8 +26,6 @@ const GameCard: React.FC<GameCardProps> = ({ selected, onClick, gameData }) => {
     redeemed = "Not Redeemed"
   }
 
-  console.log(image)
-
   return (
     <div
       className={`rounded-md border-2  ${selected ? "border-[#ff2ea8] bg-[#fad5eb] border-4" : "border-white bg-white border-2"}`}

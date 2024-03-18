@@ -157,7 +157,9 @@ def main():
             Raises:
                 `FA2_NOT_ADMIN`
             """
-            assert sp.sender == self.data.administrator, "FA2_NOT_ADMIN"
+            assert (
+                sp.sender == self.data.administrator or sp.sender == sp.self_address()
+            ), "FA2_NOT_ADMIN"
             token_id = self.data.next_token_id
             self.data.token_metadata[token_id] = sp.record(
                 token_id=token_id, token_info=metadata

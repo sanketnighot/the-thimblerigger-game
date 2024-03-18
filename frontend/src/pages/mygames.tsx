@@ -26,7 +26,6 @@ const MyGames = () => {
           `https://api.ghostnet.tzkt.io/v1/bigmaps/${gameStorage.data.game_ledger}/keys?value.player=${accounts.account?.address}`
         )
         setGameData(gameData.data)
-        console.log(gameData.data)
       } else {
         setAccount(null)
       }
@@ -35,11 +34,9 @@ const MyGames = () => {
 
   const redeemRewards = async () => {
     try {
-      toast.promise(dappClient().CheckIfWalletConnected(), {
-        pending: "Checking Wallet connection ...",
-        success: "Wallet connected",
-        error: "Error in Wallet Connection",
-      })
+      if(selectedGames.length === 0) return toast.error("Select games to redeem rewards")
+      toast.info("Preparing to redeem rewards ...")
+      await dappClient().CheckIfWalletConnected()
       const accounts = await dappClient().getAccount()
       if (accounts.success === true) {
         setAccount(accounts.account?.address)

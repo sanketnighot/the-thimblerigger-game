@@ -25,11 +25,8 @@ export default function Home() {
 
   const playGame = async () => {
     try {
-      toast.promise(dappClient().CheckIfWalletConnected(), {
-        pending: "Checking Wallet connection ...",
-        success: "Wallet connected",
-        error: "Error in Wallet Connection",
-      })
+      toast.info("Preparing to play game ...")
+      await dappClient().CheckIfWalletConnected()
       const accounts = await dappClient().getAccount()
       if (accounts.success === true) {
         setAccount(accounts.account?.address)
