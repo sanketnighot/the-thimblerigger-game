@@ -1,6 +1,5 @@
 [build]
 base = "frontend/"
-package = "frontend/"
 publish = "frontend/.next/"
 command = "yarn run build"
 
