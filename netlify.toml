@@ -1,6 +1,10 @@
 [build]
 base = "frontend"
 package = "frontend/"
-publish = "frontend/.next"
+publish = "frontend/.next/"
 command = "yarn run build"
 
+[[redirects]]
+  from = "/*"
+  to = "/*"
+  status = 200
