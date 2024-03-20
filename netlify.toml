@@ -2,8 +2,3 @@
 base = "frontend/"
 publish = ".next/"
 command = "yarn run build"
-
-[[redirects]]
-  from = "/*"
-  to = "/*"
-  status = 200
