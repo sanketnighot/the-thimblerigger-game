@@ -9,7 +9,7 @@
         {
           "prim": "Pair",
           "args": [
-            { "prim": "Pair", "args": [ { "int": "3" }, { "int": "7" } ] },
+            { "prim": "Pair", "args": [ { "int": "10" }, { "int": "20" } ] },
             {
               "prim": "Pair",
               "args": [
@@ -49,7 +49,7 @@
                                                 {
                                                   "prim": "Pair",
                                                   "args": [
-                                                    { "int": "10" },
+                                                    { "int": "30" },
                                                     {
                                                       "prim": "Pair",
                                                       "args": [

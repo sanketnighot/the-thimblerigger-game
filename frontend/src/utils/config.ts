@@ -5,7 +5,7 @@ export const RPC: string = "https://ghostnet.ecadinfra.com"
 export const EXPLORER: string = "https://ghostnet.tzkt.io"
 export const API: string = "https://api.ghostnet.tzkt.io/v1"
 export const GAME_CONTRACT_ADDRESS: string =
-  "KT1Mxfik33vzZkFF1VT4iVX4qMW4BTJxWNJH"
+  "KT19Xk6oEE5HFtyrYTdYwqGut8MGS5nHopYb"
 export const GAME_FEES: number = 3000000
 export const HUX_CONTRACT_ADDRESS: string =
   "KT1MgzSQtKuzce3GQoo776K68EU7mpcPH8Fk"

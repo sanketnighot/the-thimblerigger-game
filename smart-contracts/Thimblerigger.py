@@ -56,7 +56,7 @@ def thimblerigger():
             self.data.burn_address = sp.cast(
                 sp.address("tz1burnburnburnburnburnburnburjAYjjX"), sp.address
             )
-            self.data.max_mint = sp.cast(10, sp.nat)
+            self.data.max_mint = sp.cast(30, sp.nat)
             self.data.success_nft_base_url = sp.cast(
                 "ipfs://QmciLugiC4KbbH532q5cLPWbM5wCGSefY5E5DDkYs6hgsw/success/",
                 sp.string,
@@ -68,7 +68,7 @@ def thimblerigger():
             self.data.last_success_id = sp.cast(0, sp.nat)
             self.data.last_failure_id = sp.cast(0, sp.nat)
             self.data.distribution = sp.cast(
-                (sp.nat(3), sp.nat(7)), sp.pair[sp.nat, sp.nat]
+                (sp.nat(10), sp.nat(20)), sp.pair[sp.nat, sp.nat]
             )
             self.data.game_price = sp.cast(game_price, sp.mutez)
             self.data.game_reward = sp.cast(game_reward, sp.mutez)
