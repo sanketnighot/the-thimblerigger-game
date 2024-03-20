@@ -1,4 +1,0 @@
-[build]
-base = "frontend/"
-publish = ".next/"
-command = "yarn run build"
