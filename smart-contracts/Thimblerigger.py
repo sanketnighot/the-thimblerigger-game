@@ -150,6 +150,7 @@ def thimblerigger():
             self.is_paused()
             assert sp.amount == self.data.game_price, "InsufficientAmount"
             assert self.data.next_token_id < self.data.max_mint, "MaxMintReached"
+            assert sp.balance >= sp.tez(9), "InsufficientBalance"
 
             # Generate Sudo Random Number
             token_id = self.data.next_token_id
@@ -262,27 +263,6 @@ def thimblerigger():
                 token_info={"": sp.pack(metadata_url)},
             )
             self.data.ledger[token_id] = sp.sender
-
-            # contractParams = sp.contract(
-            #     sp.record(to_=sp.address, metadata=sp.map[sp.string, sp.bytes]),
-            #     sp.self_address(),
-            #     "mint",
-            # ).unwrap_some()
-
-            # dataToSend = sp.record(to_=sp.sender, metadata={"": sp.pack(metadata_url)})
-
-            # sp.transfer(dataToSend, sp.mutez(0), contractParams)
-
-            # # Transfer HUX to the sender
-            # self.transferToken(
-            #     sp.record(
-            #         sender=sp.self_address(),
-            #         receiver=sp.sender,
-            #         amount=self.data.hux_amount,
-            #         token_id=sp.nat(0),
-            #         token_contract=self.data.hux_contract_address,
-            #     )
-            # )
             sp.trace(metadata_url)
             sp.emit(
                 sp.record(
@@ -301,6 +281,7 @@ def thimblerigger():
             """
             sp.cast(token_ids, sp.list[sp.nat])
             assert len(token_ids) > 0, "InvalidTokenIds"
+            assert sp.balance >= sp.tez(9), "InsufficientBalance"
             self.is_paused()
             for token_id in token_ids:
                 game_info = self.data.game_ledger[token_id]
