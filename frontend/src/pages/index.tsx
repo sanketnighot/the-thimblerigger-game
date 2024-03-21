@@ -2,17 +2,17 @@
 import Head from "next/head"
 import React, { useState, useEffect } from "react"
 import Image from "next/image"
-import Navigation from "@/Components/Navigation"
 import styles from "../styles/Home.module.css"
-import { GAME_CONTRACT_ADDRESS, GAME_FEES } from "@/utils/config"
+import { GAME_CONTRACT_ADDRESS, GAME_FEES, API } from "@/utils/config"
 import { dappClient } from "../utils/walletconnect"
 import { toast } from "react-toastify"
+import axios from "axios"
 
 export default function Home() {
   const [account, setAccount] = useState<string | null>(null)
 
   useEffect(() => {
-    ;(async () => {
+    (async () => {
       // TODO 5.b - Get the active account
       const accounts = await dappClient().getAccount()
       if (accounts.success === true) {
@@ -25,6 +25,10 @@ export default function Home() {
 
   const playGame = async () => {
     try {
+      const balance = await axios.get(
+      `${API}/accounts/${GAME_CONTRACT_ADDRESS}/balance`
+    )
+      if ((balance.data / 1000000) < 9) return toast.error("“The thimblerigger ran away when he saw a policeman. You can play when he returns.")
       toast.info("Preparing to play game ...")
       await dappClient().CheckIfWalletConnected()
       const accounts = await dappClient().getAccount()
@@ -52,7 +56,6 @@ export default function Home() {
 
   return (
     <>
-      <Navigation />
       <div className={`${styles.container}`}>
         <Head>
           <title>The Thimblerigger</title>
@@ -70,6 +73,7 @@ export default function Home() {
             alt="thimblerigger"
             width={250 * 1.1}
             height={150 * 1.1}
+            unoptimized
           />
 
           <p className="mb-10 text-center justify-center text-gray-300 md:text-2xl">

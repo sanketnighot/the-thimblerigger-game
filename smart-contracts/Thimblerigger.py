@@ -366,6 +366,7 @@ if __name__ == "__main__":
 
         sc.h1("--------- Storage ---------")
         sc.show(thbr.data)
+        thbr.default(_amount=sp.tez(10))
 
         sc.h1("--------- Mint ---------")
         thbr.play(
@@ -488,7 +489,7 @@ if __name__ == "__main__":
 
         thbr = thimblerigger.Thimblerigger(
             metadata=sp.scenario_utils.metadata_of_url(metadata_uri),
-            administrator=sp.address("tz1NXUXCPwsQMHGCpdz8d1HowSp7WjNRvWth"),
+            administrator=sp.address("tz1Us5nxpKEEAFC4wprd48T8uv1NKvwDK3S6"),
             hux_contract_address=sp.address("KT1MgzSQtKuzce3GQoo776K68EU7mpcPH8Fk"),
             hux_amount=sp.nat(100),
             game_price=sp.tez(3),

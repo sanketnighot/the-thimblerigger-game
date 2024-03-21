@@ -1,8 +1,6 @@
 // redeem.tsx
 import React, { useState, useEffect } from "react"
-import Navigation from "@/Components/Navigation"
 import GameCard from "@/Components/GameCard" // Adjust the import path as necessary
-import styles from "../styles/Home.module.css"
 import { API, GAME_CONTRACT_ADDRESS, GAME_FEES } from "@/utils/config"
 import { dappClient } from "../utils/walletconnect"
 import axios from "axios"
@@ -13,8 +11,9 @@ const MyGames = () => {
   const [account, setAccount] = useState<string | null>(null)
   const [gameData, setGameData] = useState<any>([])
 
+
   useEffect(() => {
-    ;(async () => {
+    (async () => {
       // TODO 5.b - Get the active account
       const accounts = await dappClient().getAccount()
       if (accounts.success === true) {
@@ -35,6 +34,10 @@ const MyGames = () => {
   const redeemRewards = async () => {
     try {
       if(selectedGames.length === 0) return toast.error("Select games to redeem rewards")
+      const balance = await axios.get(
+        `${API}/accounts/${GAME_CONTRACT_ADDRESS}/balance`
+      )
+      if ((balance.data / 1000000) < 9) return toast.error("“The thimblerigger ran away when he saw a policeman. You will get your money when he returns.")
       toast.info("Preparing to redeem rewards ...")
       await dappClient().CheckIfWalletConnected()
       const accounts = await dappClient().getAccount()
@@ -100,7 +103,6 @@ const MyGames = () => {
 
   return (
     <>
-      <Navigation />
       <div className="container mx-auto mt-32 h-[92vh] text-center bg-fixed">
         {" "}
         {/* Increase the top margin here */}
