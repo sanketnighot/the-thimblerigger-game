@@ -16,7 +16,7 @@ const Navigation = () => {
               $HUX contract
               </a>
               : A project by Max Haarich / 
-              Twitter: &nbsp;
+              Twitter:&nbsp;
               <a
               href="https://x.com/UzupisMUC" 
               target="_blank"
