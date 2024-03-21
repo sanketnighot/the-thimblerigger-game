@@ -15,7 +15,15 @@ const Navigation = () => {
             >
               $HUX contract
               </a>
-              : A project by Max Haarich / Twitter: UzupisMUC
+              : A project by Max Haarich / 
+              Twitter: &nbsp;
+              <a
+              href="https://x.com/UzupisMUC" 
+              target="_blank"
+              className="text-white underline hover:text-[#7c7cff]"
+            >
+                UzupisMUC
+              </a>
           </p>
         </div>
       </nav>
