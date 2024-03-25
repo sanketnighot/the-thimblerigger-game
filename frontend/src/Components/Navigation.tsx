@@ -9,7 +9,7 @@ const Navigation = () => {
   const isActive = (href: string) => router.pathname === href
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       // TODO 5.b - Get the active account
       const accounts = await dappClient().getAccount()
       if (accounts.success === true) {

@@ -12,7 +12,7 @@ export default function Home() {
   const [account, setAccount] = useState<string | null>(null)
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       // TODO 5.b - Get the active account
       const accounts = await dappClient().getAccount()
       if (accounts.success === true) {
@@ -26,9 +26,12 @@ export default function Home() {
   const playGame = async () => {
     try {
       const balance = await axios.get(
-      `${API}/accounts/${GAME_CONTRACT_ADDRESS}/balance`
-    )
-      if ((balance.data / 1000000) < 9) return toast.error("“The thimblerigger ran away when he saw a policeman. You can play when he returns.")
+        `${API}/accounts/${GAME_CONTRACT_ADDRESS}/balance`
+      )
+      if (balance.data / 1000000 < 9)
+        return toast.error(
+          "The thimblerigger ran away when he saw a policeman. You can play when he returns."
+        )
       toast.info("Preparing to play game ...")
       await dappClient().CheckIfWalletConnected()
       const accounts = await dappClient().getAccount()

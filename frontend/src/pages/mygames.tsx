@@ -11,7 +11,6 @@ const MyGames = () => {
   const [account, setAccount] = useState<string | null>(null)
   const [gameData, setGameData] = useState<any>([])
 
-
   useEffect(() => {
     (async () => {
       // TODO 5.b - Get the active account
@@ -33,11 +32,15 @@ const MyGames = () => {
 
   const redeemRewards = async () => {
     try {
-      if(selectedGames.length === 0) return toast.error("Select games to redeem rewards")
+      if (selectedGames.length === 0)
+        return toast.error("Select games to redeem rewards")
       const balance = await axios.get(
         `${API}/accounts/${GAME_CONTRACT_ADDRESS}/balance`
       )
-      if ((balance.data / 1000000) < 9) return toast.error("“The thimblerigger ran away when he saw a policeman. You will get your money when he returns.")
+      if ((balance.data / 1000000) < (9 * selectedGames.length))
+        return toast.error(
+          "The thimblerigger ran away when he saw a policeman. You will get your money when he returns."
+        )
       toast.info("Preparing to redeem rewards ...")
       await dappClient().CheckIfWalletConnected()
       const accounts = await dappClient().getAccount()
@@ -106,8 +109,8 @@ const MyGames = () => {
       <div className="container mx-auto mt-32 h-[92vh] text-center bg-fixed">
         {" "}
         {/* Increase the top margin here */}
-        <h1 className="text-5xl font-bold mb-4 text-gray-300">Your Games</h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-10 overflow-y-auto max-h-[70vh] p-4 border-2 rounded-xl mx-4">
+        <h1 className="text-3xl md:text-5xl font-bold mb-2 md:mb-4 text-gray-300">Your Games</h1>
+        <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 my-1 md:my-10 overflow-y-auto max-h-[50vh] md:max-h-[70vh] p-4 border-2 rounded-xl mx-4">
           {gameData.map((game: any) => (
             <GameCard
               key={Number(game.key)}
@@ -116,7 +119,7 @@ const MyGames = () => {
               onClick={() => handleGameSelect(Number(game.key))}
             />
           ))}
-          <div className="justify-center my-5 grid col-span-4">
+          <div className="flex flex-wrap justify-center mt-10">
             {gameData.length === 0 && !account && (
               <p className="text-gray-400 text-xl mx-auto italic font-extrabold">
                 Connect Wallet to see your games.
