@@ -62,10 +62,6 @@ export default function Home() {
       <div className={`${styles.container}`}>
         <Head>
           <title>The Thimblerigger</title>
-          <meta
-            name="description"
-            content="Send a million $HUX to your Tezos friends"
-          />
           <link rel="icon" href="/favicon.ico" />
         </Head>
 

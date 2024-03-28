@@ -5,6 +5,7 @@ import { API, GAME_CONTRACT_ADDRESS, GAME_FEES } from "@/utils/config"
 import { dappClient } from "../utils/walletconnect"
 import axios from "axios"
 import { toast } from "react-toastify"
+import Head from "next/head"
 
 const MyGames = () => {
   const [selectedGames, setSelectedGames] = useState<number[]>([])
@@ -12,7 +13,7 @@ const MyGames = () => {
   const [gameData, setGameData] = useState<any>([])
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       // TODO 5.b - Get the active account
       const accounts = await dappClient().getAccount()
       if (accounts.success === true) {
@@ -37,7 +38,7 @@ const MyGames = () => {
       const balance = await axios.get(
         `${API}/accounts/${GAME_CONTRACT_ADDRESS}/balance`
       )
-      if ((balance.data / 1000000) < (9 * selectedGames.length))
+      if (balance.data / 1000000 < 9 * selectedGames.length)
         return toast.error(
           "The thimblerigger ran away when he saw a policeman. You will get your money when he returns."
         )
@@ -106,10 +107,19 @@ const MyGames = () => {
 
   return (
     <>
-      <div className="container mx-auto mt-32 h-[92vh] text-center bg-fixed">
+      <Head>
+        <title>The Thimblerigger | My Games</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <div className="container mx-auto mt-32 h-[100vh] text-center bg-fixed">
         {" "}
         {/* Increase the top margin here */}
-        <h1 className="text-3xl md:text-5xl font-bold mb-2 md:mb-4 text-gray-300">Your Games</h1>
+        <h1 className="text-3xl md:text-5xl font-bold mb-2 text-gray-300">
+          Your Games
+        </h1>
+        <p className="text-center justify-center text-gray-300 md:text-2xl">
+            You can check the outcome and redeem winner NFTs
+          </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 my-1 md:my-10 overflow-y-auto max-h-[50vh] md:max-h-[70vh] p-4 border-2 rounded-xl mx-4">
           {gameData.map((game: any) => (
             <GameCard
