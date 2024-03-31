@@ -1,5 +1,5 @@
 Creating contract KT1TezoooozzSmartPyzzSTATiCzzzwwBFA1
- -> (Pair "tz1Us5nxpKEEAFC4wprd48T8uv1NKvwDK3S6" (Pair "tz1burnburnburnburnburnburnburjAYjjX" (Pair (Pair 34 66) (Pair "ipfs://QmdHJ4oxDV9om6knqRhqm7JDN4LtzRjeMvYLv2hbFEnSNH/failure/" (Pair {} (Pair 3000000 (Pair 9000000 (Pair 100000000000 (Pair "KT1MgzSQtKuzce3GQoo776K68EU7mpcPH8Fk" (Pair 0 (Pair 0 (Pair {} (Pair 30 (Pair {Elt "" 0x697066733a2f2f516d5665526e4a6f6f5164326862627869364c61346b58543448745051514771465a7145586f43524864706d4d53} (Pair 0 (Pair {} (Pair False (Pair "ipfs://QmdHJ4oxDV9om6knqRhqm7JDN4LtzRjeMvYLv2hbFEnSNH/success/" {}))))))))))))))))))
+ -> (Pair "tz1Us5nxpKEEAFC4wprd48T8uv1NKvwDK3S6" (Pair "tz1burnburnburnburnburnburnburjAYjjX" (Pair (Pair 34 66) (Pair "ipfs://QmdHJ4oxDV9om6knqRhqm7JDN4LtzRjeMvYLv2hbFEnSNH/failure/" (Pair {} (Pair 3000000 (Pair 9000000 (Pair 100000000000 (Pair "KT1MgzSQtKuzce3GQoo776K68EU7mpcPH8Fk" (Pair 0 (Pair 0 (Pair {} (Pair 100 (Pair {Elt "" 0x697066733a2f2f516d5665526e4a6f6f5164326862627869364c61346b58543448745051514771465a7145586f43524864706d4d53} (Pair 0 (Pair {} (Pair False (Pair "ipfs://QmdHJ4oxDV9om6knqRhqm7JDN4LtzRjeMvYLv2hbFEnSNH/success/" {}))))))))))))))))))
 file ThimbleriggerCompiled/step_006_cont_0_storage.tz
 file ThimbleriggerCompiled/step_006_cont_0_storage.json
 file ThimbleriggerCompiled/step_006_cont_0_storage.py

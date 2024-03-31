@@ -56,7 +56,7 @@ def thimblerigger():
             self.data.burn_address = sp.cast(
                 sp.address("tz1burnburnburnburnburnburnburjAYjjX"), sp.address
             )
-            self.data.max_mint = sp.cast(30, sp.nat)
+            self.data.max_mint = sp.cast(100, sp.nat)
             self.data.success_nft_base_url = sp.cast(
                 "ipfs://QmdHJ4oxDV9om6knqRhqm7JDN4LtzRjeMvYLv2hbFEnSNH/success/",
                 sp.string,

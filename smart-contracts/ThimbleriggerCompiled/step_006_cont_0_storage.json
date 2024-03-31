@@ -49,7 +49,7 @@
                                                 {
                                                   "prim": "Pair",
                                                   "args": [
-                                                    { "int": "30" },
+                                                    { "int": "100" },
                                                     {
                                                       "prim": "Pair",
                                                       "args": [
