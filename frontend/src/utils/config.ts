@@ -1,7 +1,7 @@
 import { NetworkType } from "@airgap/beacon-sdk"
 
 export const NETWORK: NetworkType = NetworkType.GHOSTNET
-export const RPC: string = "https://ghostnet.ecadinfra.com"
+export const RPC: string = "https://rpc.ghostnet.teztnets.com"
 export const EXPLORER: string = "https://ghostnet.tzkt.io"
 export const API: string = "https://api.ghostnet.tzkt.io/v1"
 export const GAME_CONTRACT_ADDRESS: string =
