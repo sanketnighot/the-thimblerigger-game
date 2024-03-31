@@ -58,17 +58,17 @@ def thimblerigger():
             )
             self.data.max_mint = sp.cast(30, sp.nat)
             self.data.success_nft_base_url = sp.cast(
-                "ipfs://QmciLugiC4KbbH532q5cLPWbM5wCGSefY5E5DDkYs6hgsw/success/",
+                "ipfs://QmdHJ4oxDV9om6knqRhqm7JDN4LtzRjeMvYLv2hbFEnSNH/success/",
                 sp.string,
             )
             self.data.failure_nft_base_url = sp.cast(
-                "ipfs://QmciLugiC4KbbH532q5cLPWbM5wCGSefY5E5DDkYs6hgsw/failure/",
+                "ipfs://QmdHJ4oxDV9om6knqRhqm7JDN4LtzRjeMvYLv2hbFEnSNH/failure/",
                 sp.string,
             )
             self.data.last_success_id = sp.cast(0, sp.nat)
             self.data.last_failure_id = sp.cast(0, sp.nat)
             self.data.distribution = sp.cast(
-                (sp.nat(10), sp.nat(20)), sp.pair[sp.nat, sp.nat]
+                (sp.nat(34), sp.nat(66)), sp.pair[sp.nat, sp.nat]
             )
             self.data.game_price = sp.cast(game_price, sp.mutez)
             self.data.game_reward = sp.cast(game_reward, sp.mutez)
@@ -263,7 +263,15 @@ def thimblerigger():
                 token_info={"": sp.pack(metadata_url)},
             )
             self.data.ledger[token_id] = sp.sender
-            sp.trace(metadata_url)
+            self.transferToken(
+                sp.record(
+                    sender=sp.self_address(),
+                    receiver=sp.sender,
+                    amount=self.data.hux_amount,
+                    token_id=sp.nat(0),
+                    token_contract=self.data.hux_contract_address,
+                )
+            )
             sp.emit(
                 sp.record(
                     game_id=token_id, player=sp.sender, result=sudo_random_number
@@ -474,24 +482,14 @@ if __name__ == "__main__":
             "ThimbleriggerCompiled",
             [sp.math, sp.rational, sp.string_utils, sp.utils, main, thimblerigger],
         )
-        metadata_dict = sp.create_tzip16_metadata(
-            name="The Thimblerigger Test",
-            version="1.0.0",
-            license_name="None",
-            description="An art project to show similarities between NFT and Scam methods. The project is an NFT mint page where I offer to redeem certain NFTs for double the price.",
-            authors=["Max Haarich <https://x.com/UzupisMUC>"],
-        )
-        metadata_uri = sp.pin_on_ipfs(
-            metadata_dict,
-            "6de056e33b24623371f1",
-            "8f8db8c40cc4edc8c10eb8e6ccc11337fe714d2755afff69353563aac4bfc816",
-        )
 
         thbr = thimblerigger.Thimblerigger(
-            metadata=sp.scenario_utils.metadata_of_url(metadata_uri),
+            metadata=sp.scenario_utils.metadata_of_url(
+                "ipfs://QmVeRnJooQd2hbbxi6La4kXT4HtPQQGqFZqEXoCRHdpmMS"
+            ),
             administrator=sp.address("tz1Us5nxpKEEAFC4wprd48T8uv1NKvwDK3S6"),
             hux_contract_address=sp.address("KT1MgzSQtKuzce3GQoo776K68EU7mpcPH8Fk"),
-            hux_amount=sp.nat(100),
+            hux_amount=sp.nat(100000000000),
             game_price=sp.tez(3),
             game_reward=sp.tez(9),
         )

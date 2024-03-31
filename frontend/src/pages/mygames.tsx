@@ -111,7 +111,7 @@ const MyGames = () => {
         <title>The Thimblerigger | My Games</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="container mx-auto mt-32 h-[100vh] text-center bg-fixed">
+      <div className="container mx-auto mt-32 h-[120lvh] text-center bg-fixed">
         {" "}
         {/* Increase the top margin here */}
         <h1 className="text-3xl md:text-5xl font-bold mb-2 text-gray-300">
@@ -120,7 +120,7 @@ const MyGames = () => {
         <p className="text-center justify-center text-gray-300 md:text-2xl">
             You can check the outcome and redeem winner NFTs
           </p>
-        <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 my-1 md:my-10 overflow-y-auto max-h-[50vh] md:max-h-[70vh] p-4 border-2 rounded-xl mx-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 my-1 md:my-10 overflow-y-auto max-h-[50lvh] md:max-h-[70lvh] p-4 border-2 rounded-xl mx-4">
           {gameData.map((game: any) => (
             <GameCard
               key={Number(game.key)}
@@ -145,7 +145,7 @@ const MyGames = () => {
         <div className="flex justify-center my-5">
           <button
             type="button"
-            className="text-white bg-gradient-to-br from-[#9b831d] to-[#85975b] hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xl px-8 py-2 text-center w-auto"
+            className="text-white bg-gradient-to-br from-[#9b831d] to-[#85975b] hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xl px-8 py-2 text-center w-auto mb-28"
             onClick={redeemRewards}
           >
             <span className="flex items-center justify-center">

@@ -9,11 +9,11 @@
         {
           "prim": "Pair",
           "args": [
-            { "prim": "Pair", "args": [ { "int": "10" }, { "int": "20" } ] },
+            { "prim": "Pair", "args": [ { "int": "34" }, { "int": "66" } ] },
             {
               "prim": "Pair",
               "args": [
-                { "string": "ipfs://QmciLugiC4KbbH532q5cLPWbM5wCGSefY5E5DDkYs6hgsw/failure/" },
+                { "string": "ipfs://QmdHJ4oxDV9om6knqRhqm7JDN4LtzRjeMvYLv2hbFEnSNH/failure/" },
                 {
                   "prim": "Pair",
                   "args": [
@@ -29,7 +29,7 @@
                             {
                               "prim": "Pair",
                               "args": [
-                                { "int": "100" },
+                                { "int": "100000000000" },
                                 {
                                   "prim": "Pair",
                                   "args": [
@@ -59,7 +59,7 @@
                                                             "args": [
                                                               { "string": "" },
                                                               {
-                                                                "bytes": "697066733a2f2f516d61376a4e6b756a716677506861426b6a5a6d6a74366a67584a5a706a566e7777516944687753766653676248"
+                                                                "bytes": "697066733a2f2f516d5665526e4a6f6f5164326862627869364c61346b58543448745051514771465a7145586f43524864706d4d53"
                                                               }
                                                             ]
                                                           }
@@ -78,7 +78,7 @@
                                                                     { "prim": "False" },
                                                                     {
                                                                       "prim": "Pair",
-                                                                      "args": [ { "string": "ipfs://QmciLugiC4KbbH532q5cLPWbM5wCGSefY5E5DDkYs6hgsw/success/" }, [] ]
+                                                                      "args": [ { "string": "ipfs://QmdHJ4oxDV9om6knqRhqm7JDN4LtzRjeMvYLv2hbFEnSNH/success/" }, [] ]
                                                                     }
                                                                   ]
                                                                 }
