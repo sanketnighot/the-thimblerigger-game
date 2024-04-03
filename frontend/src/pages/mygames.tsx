@@ -22,7 +22,7 @@ const MyGames = () => {
           `${API}/contracts/${GAME_CONTRACT_ADDRESS}/storage`
         )
         const gameData = await axios.get(
-          `https://api.ghostnet.tzkt.io/v1/bigmaps/${gameStorage.data.game_ledger}/keys?value.player=${accounts.account?.address}`
+          `${API}/bigmaps/${gameStorage.data.game_ledger}/keys?value.player=${accounts.account?.address}`
         )
         setGameData(gameData.data)
       } else {
@@ -118,8 +118,8 @@ const MyGames = () => {
           Your Games
         </h1>
         <p className="text-center justify-center text-gray-300 md:text-2xl">
-            You can check the outcome and redeem winner NFTs
-          </p>
+          You can check the outcome and redeem winner NFTs
+        </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 my-1 md:my-10 overflow-y-auto max-h-[50lvh] md:max-h-[70lvh] p-4 border-2 rounded-xl mx-4">
           {gameData.map((game: any) => (
             <GameCard

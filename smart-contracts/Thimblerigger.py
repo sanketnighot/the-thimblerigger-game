@@ -488,7 +488,7 @@ if __name__ == "__main__":
                 "ipfs://QmVeRnJooQd2hbbxi6La4kXT4HtPQQGqFZqEXoCRHdpmMS"
             ),
             administrator=sp.address("tz1Us5nxpKEEAFC4wprd48T8uv1NKvwDK3S6"),
-            hux_contract_address=sp.address("KT1MgzSQtKuzce3GQoo776K68EU7mpcPH8Fk"),
+            hux_contract_address=sp.address("KT1MT3rZkTE8cN8eGQaNJ2Wg2D2nPPtdxELv"),
             hux_amount=sp.nat(100000000000),
             game_price=sp.tez(3),
             game_reward=sp.tez(9),

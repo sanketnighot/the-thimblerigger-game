@@ -44,7 +44,7 @@ export const dappClient = () => {
     await client.clearActiveAccount()
     return client.requestPermissions({
       network: {
-        type: NetworkType.GHOSTNET,
+        type: NetworkType.MAINNET,
       },
     })
   }
@@ -56,7 +56,7 @@ export const dappClient = () => {
       if (!activeAccount) {
         await client.requestPermissions({
           network: {
-            type: NetworkType.GHOSTNET,
+            type: NetworkType.MAINNET,
           },
         })
       }

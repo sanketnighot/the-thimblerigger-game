@@ -12,7 +12,7 @@ const Navigation = () => {
               target="_blank"
               className="text-white underline hover:text-[#7c7cff]"
             >
-              $HUX contract
+              $HUX Contract Address
             </a>
             : A project by Max Haarich / Twitter:&nbsp;
             <a
