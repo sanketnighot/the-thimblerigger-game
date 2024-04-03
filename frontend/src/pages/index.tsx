@@ -63,6 +63,14 @@ export default function Home() {
         <Head>
           <title>The Thimblerigger</title>
           <link rel="icon" href="/favicon.ico" />
+          <meta property="og:title" content="The Thimblerigger" />
+          <meta
+            property="og:description"
+            content="The Thimblerigger is a conceptual art performance on the Tezos blockchain. The project plays with stereotype of a crypto space eventually aiming to scam everyone."
+          />
+          <meta property="og:site_name" content="The Thimblerigger" />
+          <meta property="og:image" content={"/favicon.ico"} />
+          <meta property="og:url" content="https://thimblerigger.uzupis.de" />
         </Head>
 
         <main className={`${styles.main} text-white font-mono`}>
